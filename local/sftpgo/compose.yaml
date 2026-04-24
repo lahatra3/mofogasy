@@ -1,0 +1,40 @@
+services:
+  sftpgo:
+    image: drakkan/sftpgo:v2.7.0
+    container_name: local_sftpgo
+    restart: always
+    environment:
+      SFTPGO_LOG_LEVEL: info
+      SFTPGO_LOG_FORMAT: json
+      SFTPGO_LOG_OUTPUT: stdout
+      # ===== Base de données =====
+      SFTPGO_DATA_PROVIDER__DRIVER: postgresql
+      SFTPGO_DATA_PROVIDER__HOST: 172.17.0.1
+      SFTPGO_DATA_PROVIDER__PORT: 5431
+      SFTPGO_DATA_PROVIDER__NAME: sftpgo
+      SFTPGO_DATA_PROVIDER__USERNAME: postgres
+      SFTPGO_DATA_PROVIDER__PASSWORD: p0stgr3s
+      SFTPGO_DATA_PROVIDER__SSL_MODE: disable
+      # ===== Serveur SFTP =====
+      SFTPGO_SFTPD__BINDINGS__0__ADDRESS: 0.0.0.0
+      SFTPGO_SFTPD__BINDINGS__0__PORT: 2022
+      # ===== Web admin =====
+      SFTPGO_HTTPD__BINDINGS__0__ADDRESS: 0.0.0.0
+      SFTPGO_HTTPD__BINDINGS__0__PORT: 8080
+      # ===== Sécurité =====
+      SFTPGO_DEFAULTS__PASSWORD_HASHING_ALGO: bcrypt
+      SFTPGO_DEFAULTS__PASSWORD_HASHING_COST: 12
+      SFTPGO_SFTPD__HOST_KEYS__0__PATH: /var/lib/sftpgo/ssh/id_rsa
+    ports:
+      - "3180:8080"
+      - "3122:2022"
+    volumes:
+      - ./data:/srv/sftpgo/data
+      - ./config:/var/lib/sftpgo
+      - ./keys:/var/lib/sftpgo/ssh
+    networks:
+      - lahatra3_network
+networks:
+  lahatra3_network:
+    driver: bridge
+    
