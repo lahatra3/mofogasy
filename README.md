@@ -1,6 +1,7 @@
 # mofogasy
 Server side application for streaming big file from SFTPGo
 
+<img width="1159" height="564" alt="image" src="https://github.com/user-attachments/assets/b3962d0c-44bf-42f7-bf83-8c8c03d9a711" />
 
 ### To install dependencies:
 
